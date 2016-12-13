@@ -341,4 +341,6 @@ class IRsend
 #		endif
 } ;
 
+void IRInterrupt();
+
 #endif

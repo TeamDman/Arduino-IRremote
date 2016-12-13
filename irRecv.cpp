@@ -117,7 +117,8 @@ IRrecv::IRrecv (int recvpin, int blinkpin)
 //
 void  IRrecv::enableIRIn ( )
 {
-	cli();
+	// cli();
+	noInterrupts();
 	// Setup pulse clock timer interrupt
 	// Prescale /8 (16M/8 = 0.5 microseconds per tick)
 	// Therefore, the timer interval can range from 0.5 to 128 microseconds
@@ -129,7 +130,8 @@ void  IRrecv::enableIRIn ( )
 
 	TIMER_RESET;
 
-	sei();  // enable interrupts
+	// sei();  // enable interrupts
+	interrupts();
 
 	// Initialize state machine variables
 	irparams.rcvstate = STATE_IDLE;

@@ -147,55 +147,64 @@
 //
 #if defined(IR_USE_TIMER2)
 
-#define TIMER_RESET
-#define TIMER_ENABLE_PWM    (TCCR2A |= _BV(COM2B1))
-#define TIMER_DISABLE_PWM   (TCCR2A &= ~(_BV(COM2B1)))
-#define TIMER_ENABLE_INTR   (TIMSK2 = _BV(OCIE2A))
-#define TIMER_DISABLE_INTR  (TIMSK2 = 0)
-#define TIMER_INTR_NAME     TIMER2_COMPA_vect
+// #define TIMER_RESET
+// #define TIMER_ENABLE_PWM    (TCCR2A |= _BV(COM2B1))
+// #define TIMER_DISABLE_PWM   (TCCR2A &= ~(_BV(COM2B1)))
+// #define TIMER_ENABLE_INTR   (TIMSK2 = _BV(OCIE2A))
+// #define TIMER_DISABLE_INTR  (TIMSK2 = 0)
+// #define TIMER_INTR_NAME     TIMER2_COMPA_vect
 
-#define TIMER_CONFIG_KHZ(val) ({ \
-	const uint8_t pwmval = SYSCLOCK / 2000 / (val); \
-	TCCR2A               = _BV(WGM20); \
-	TCCR2B               = _BV(WGM22) | _BV(CS20); \
-	OCR2A                = pwmval; \
-	OCR2B                = pwmval / 3; \
-})
+// #define TIMER_CONFIG_KHZ(val) ({ \
+// 	const uint8_t pwmval = SYSCLOCK / 2000 / (val); \
+// 	TCCR2A               = _BV(WGM20); \
+// 	TCCR2B               = _BV(WGM22) | _BV(CS20); \
+// 	OCR2A                = pwmval; \
+// 	OCR2B                = pwmval / 3; \
+// })
 
-#define TIMER_COUNT_TOP  (SYSCLOCK * USECPERTICK / 1000000)
+// #define TIMER_COUNT_TOP  (SYSCLOCK * USECPERTICK / 1000000)
 
-//-----------------
-#if (TIMER_COUNT_TOP < 256)
-#	define TIMER_CONFIG_NORMAL() ({ \
-		TCCR2A = _BV(WGM21); \
-		TCCR2B = _BV(CS20); \
-		OCR2A  = TIMER_COUNT_TOP; \
-		TCNT2  = 0; \
-	})
-#else
-#	define TIMER_CONFIG_NORMAL() ({ \
-		TCCR2A = _BV(WGM21); \
-		TCCR2B = _BV(CS21); \
-		OCR2A  = TIMER_COUNT_TOP / 8; \
-		TCNT2  = 0; \
-	})
-#endif
+// //-----------------
+// #if (TIMER_COUNT_TOP < 256)
+// #	define TIMER_CONFIG_NORMAL() ({ \
+// 		TCCR2A = _BV(WGM21); \
+// 		TCCR2B = _BV(CS20); \
+// 		OCR2A  = TIMER_COUNT_TOP; \
+// 		TCNT2  = 0; \
+// 	})
+// #else
+// #	define TIMER_CONFIG_NORMAL() ({ \
+// 		TCCR2A = _BV(WGM21); \
+// 		TCCR2B = _BV(CS21); \
+// 		OCR2A  = TIMER_COUNT_TOP / 8; \
+// 		TCNT2  = 0; \
+// 	})
+// #endif
 
-//-----------------
-#if defined(CORE_OC2B_PIN)
-#	define TIMER_PWM_PIN  CORE_OC2B_PIN  // Teensy
-#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-#	define TIMER_PWM_PIN  9              // Arduino Mega
-#elif defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__) \
-|| defined(__AVR_ATmega644__) || defined(__AVR_ATmega644P__) \
-|| defined(__AVR_ATmega324P__) || defined(__AVR_ATmega324A__) \
-|| defined(__AVR_ATmega324PA__) || defined(__AVR_ATmega164A__) \
-|| defined(__AVR_ATmega164P__)
-#	define TIMER_PWM_PIN  14             // MightyCore
-#else
-#	define TIMER_PWM_PIN  3              // Arduino Duemilanove, Diecimila, LilyPad, etc
-#endif					     // ATmega48, ATmega88, ATmega168, ATmega328
-
+// //-----------------
+// #if defined(CORE_OC2B_PIN)
+// #	define TIMER_PWM_PIN  CORE_OC2B_PIN  // Teensy
+// #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+// #	define TIMER_PWM_PIN  9              // Arduino Mega
+// #elif defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__) \
+// || defined(__AVR_ATmega644__) || defined(__AVR_ATmega644P__) \
+// || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega324A__) \
+// || defined(__AVR_ATmega324PA__) || defined(__AVR_ATmega164A__) \
+// || defined(__AVR_ATmega164P__)
+// #	define TIMER_PWM_PIN  14             // MightyCore
+// #else
+// #	define TIMER_PWM_PIN  3              // Arduino Duemilanove, Diecimila, LilyPad, etc
+// #endif					     // ATmega48, ATmega88, ATmega168, ATmega328
+#define TIMER_RESET 
+#define TIMER_ENABLE_PWM
+#define TIMER_DISABLE_PWM
+#define TIMER_ENABLE_INTR 
+#define TIMER_DISABLE_INTR 
+#define TIMER_INTR_NAME 
+#define TIMER_CONFIG_KHZ 
+#define TIMER_COUNT_TOP 
+#define TIMER_CONFIG_NORMAL() ({})
+#define TIMER_PWM_PIN 0
 //---------------------------------------------------------
 // Timer1 (16 bits)
 //

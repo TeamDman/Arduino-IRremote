@@ -120,16 +120,22 @@ int  MATCH_SPACE (int measured_ticks,  int desired_us)
 // As soon as first MARK arrives:
 //   Gap width is recorded; Ready is cleared; New logging starts
 //
-ISR (TIMER_INTR_NAME)
-{
+void IRInterrupt() {
 	TIMER_RESET;
 
 	// Read if IR Receiver -> SPACE [xmt LED off] or a MARK [xmt LED on]
 	// digitalRead() is very slow. Optimisation is possible, but makes the code unportable
+
+
+
+
+	
 	uint8_t  irdata = (uint8_t)digitalRead(irparams.recvpin);
+
 
 	irparams.timer++;  // One more 50uS tick
 	if (irparams.rawlen >= RAWBUF)  irparams.rcvstate = STATE_OVERFLOW ;  // Buffer overflow
+
 
 	switch(irparams.rcvstate) {
 		//......................................................................
@@ -181,13 +187,12 @@ ISR (TIMER_INTR_NAME)
 			irparams.rcvstate = STATE_STOP;
 		 	break;
 	}
-
-	// If requested, flash LED while receiving IR data
-	if (irparams.blinkflag) {
-		if (irdata == MARK)
-			if (irparams.blinkpin) digitalWrite(irparams.blinkpin, HIGH); // Turn user defined pin LED on
-				else BLINKLED_ON() ;   // if no user defined LED pin, turn default LED pin for the hardware on
-		else if (irparams.blinkpin) digitalWrite(irparams.blinkpin, LOW); // Turn user defined pin LED on
-				else BLINKLED_OFF() ;   // if no user defined LED pin, turn default LED pin for the hardware on
-	}
+	// // If requested, flash LED while receiving IR data
+	// if (irparams.blinkflag) {
+	// 	if (irdata == MARK)
+	// 		if (irparams.blinkpin) digitalWrite(irparams.blinkpin, HIGH); // Turn user defined pin LED on
+	// 			else BLINKLED_ON() ;   // if no user defined LED pin, turn default LED pin for the hardware on
+	// 	else if (irparams.blinkpin) digitalWrite(irparams.blinkpin, LOW); // Turn user defined pin LED on
+	// 			else BLINKLED_OFF() ;   // if no user defined LED pin, turn default LED pin for the hardware on
+	// }
 }
