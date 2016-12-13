@@ -26,6 +26,7 @@
 #	include "IRremoteInt.h"
 #undef IR_GLOBAL
 
+
 //+=============================================================================
 // The match functions were (apparently) originally MACROs to improve code speed
 //   (although this would have bloated the code) hence the names being CAPS
@@ -120,8 +121,14 @@ int  MATCH_SPACE (int measured_ticks,  int desired_us)
 // As soon as first MARK arrives:
 //   Gap width is recorded; Ready is cleared; New logging starts
 //
+
+
+// #ifndef IR_USE_TIMER_ARDUINO
+// 	ISR (TIMER_INTR_NAME) {IRInterrupt();}
+// #endif
+
 void IRInterrupt() {
-	TIMER_RESET;
+		TIMER_RESET;
 
 	// Read if IR Receiver -> SPACE [xmt LED off] or a MARK [xmt LED on]
 	// digitalRead() is very slow. Optimisation is possible, but makes the code unportable

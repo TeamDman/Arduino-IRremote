@@ -341,6 +341,8 @@ class IRsend
 #		endif
 } ;
 
-void IRInterrupt();
+// #ifdef IR_USE_ARDUINO_TIMER
+	void IRInterrupt();
+// #endif
 
 #endif

@@ -1,6 +1,14 @@
 #include "IRremote.h"
 #include "IRremoteInt.h"
 
+#ifdef IR_USE_ARDUINO_TIMER
+#	define NOINTERRUPTS noInterrupts()
+#	define INTERRUPTS interrupts()
+#else
+#	define NOINTERRUPTS cli()
+#	define INTERRUPTS sei()
+#endif
+
 //+=============================================================================
 // Decodes the received IR message
 // Returns 0 if no data ready, 1 if data ready.
@@ -117,8 +125,7 @@ IRrecv::IRrecv (int recvpin, int blinkpin)
 //
 void  IRrecv::enableIRIn ( )
 {
-	// cli();
-	noInterrupts();
+	NOINTERRUPTS;
 	// Setup pulse clock timer interrupt
 	// Prescale /8 (16M/8 = 0.5 microseconds per tick)
 	// Therefore, the timer interval can range from 0.5 to 128 microseconds
@@ -130,8 +137,7 @@ void  IRrecv::enableIRIn ( )
 
 	TIMER_RESET;
 
-	// sei();  // enable interrupts
-	interrupts();
+	INTERRUPTS;
 
 	// Initialize state machine variables
 	irparams.rcvstate = STATE_IDLE;
