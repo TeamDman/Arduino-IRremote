@@ -1,13 +1,14 @@
 #include "IRremote.h"
 #include "IRremoteInt.h"
 
-#ifdef IR_USE_ARDUINO_TIMER
+// #ifdef IR_USE_ARDUINO_TIMER
+//ONLY use Arduino interrupts, crashes with other definition.
 #	define NOINTERRUPTS noInterrupts()
 #	define INTERRUPTS interrupts()
-#else
-#	define NOINTERRUPTS cli()
-#	define INTERRUPTS sei()
-#endif
+// #else
+// #	define NOINTERRUPTS cli()
+// #	define INTERRUPTS sei()
+// #endif
 
 //+=============================================================================
 // Decodes the received IR message
@@ -130,7 +131,17 @@ void  IRrecv::enableIRIn ( )
 	// Prescale /8 (16M/8 = 0.5 microseconds per tick)
 	// Therefore, the timer interval can range from 0.5 to 128 microseconds
 	// Depending on the reset value (255 to 0)
-	TIMER_CONFIG_NORMAL();
+
+
+	//TIMER_CONFIG_NORMAL();
+	// Not sure how to make header macro do this 
+	Timer4.pause(); 
+	Timer4.setPrescaleFactor(1); 
+	Timer4.setChannel1Mode(TIMER_OUTPUTCOMPARE); 
+	Timer4.setOverflow(2287); 
+	Timer4.setCompare1(300); 
+	Timer4.attachCompare1Interrupt(IRInterrupt); 
+	Timer4.resume(); 
 
 	// Timer2 Overflow Interrupt Enable
 	TIMER_ENABLE_INTR;

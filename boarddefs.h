@@ -66,7 +66,10 @@
 //
 
 // Arduino Mega
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+#if defined(__Firefly__)
+	#define IR_USE_TIMER_ARDUINO  // Let the hack begin...
+
+#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 	//#define IR_USE_TIMER1   // tx = pin 11
 	#define IR_USE_TIMER2     // tx = pin 9
 	//#define IR_USE_TIMER3   // tx = pin 5
@@ -134,8 +137,6 @@
 // Arduino Duemilanove, Diecimila, LilyPad, Mini, Fio, Nano, etc
 // ATmega48, ATmega88, ATmega168, ATmega328
 
-#elif defined(__Firefly__)
-	#define IR_USE_TIMER_ARDUINO  // Let the hack begin...
 
 #else
 	//#define IR_USE_TIMER1   // tx = pin 9
@@ -143,13 +144,15 @@
 
 #endif
 
+#define IR_USE_TIMER_ARDUINO
+
 //------------------------------------------------------------------------------
 // Defines for Timer
 
 //---------------------------------------------------------
 // Timer2 (8 bits)
 //
-#if defined(IR_USE_TIMER_ARDUINO)
+#if	defined(IR_USE_TIMER_ARDUINO)
 	// Ignore for now
 	#define TIMER_RESET 
 	#define TIMER_ENABLE_PWM
@@ -161,7 +164,6 @@
 	#define TIMER_COUNT_TOP 
 	#define TIMER_CONFIG_NORMAL() ({})
 	#define TIMER_PWM_PIN 0
-
 
 #elif defined(IR_USE_TIMER2)
 
